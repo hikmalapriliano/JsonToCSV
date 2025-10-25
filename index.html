@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ JSON to CSV Converter Keren ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+<div class="background-animation">
+        <ul class="squares">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h1>✨ JSON to CSV Converter ✨</h1>
+       <p class="typing-container">
+            <span id="typed-text"></span>
+            <span class="blinking-cursor">|</span>
+        </p>
+
+        <div class="converter-layout">
+            <div class="input-card">
+                <h2><i class="fas fa-file-code"></i> JSON Input</h2>
+                <div class="upload-area">
+                    <input type="file" id="json-file-input" accept=".json">
+                    <label for="json-file-input" class="upload-label">
+                        <i class="fas fa-upload"></i> Upload File JSON
+                    </label>
+                </div>
+                <textarea id="json-input" placeholder="Paste data JSON di sini..."></textarea>
+            </div>
+
+            <div class="output-card">
+                <h2><i class="fas fa-file-csv"></i> CSV Output</h2>
+                <button id="download-btn" class="btn" disabled><i class="fas fa-download"></i> Download CSV</button>
+                <textarea id="csv-output" placeholder="Hasil CSV akan muncul di sini..." readonly></textarea>
+            </div>
+        </div>
+
+
+        <button id="convert-btn" class="btn">
+            Convert to CSV →
+        </button>
+<footer class="converter-footer">
+    <p>
+        Made 
+        <span class="maker-text">by Hikmal Apriliano</span>
+    </p>
+</footer>
+        <div id="status-message"></div>
+    </div>
+
+    <script src="script.js"></script> </body>
+</html>
