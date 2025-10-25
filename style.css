@@ -1,13 +1,8 @@
-/*
-========================================
-CSS STYLING - DESAIN GELAP & ANIMASI
-========================================
-*/
 :root {
-    --bg-color: #1a1a2e; /* Biru tua gelap */
-    --card-bg: #22223b; /* Ungu gelap */
-    --primary-color: #00bcd4; /* Cyan terang */
-    --success-color: #64ffda; /* Hijau muda neon */
+    --bg-color: #1a1a2e; 
+    --card-bg: #22223b; 
+    --primary-color: #00bcd4; 
+    --success-color: #64ffda; 
     --text-color: #e4e4f0;
     --border-radius: 12px;
     --transition-speed: 0.3s;
@@ -29,13 +24,13 @@ body {
 }
 
 .background-animation {
-    position: fixed; /* Memastikan background menutupi seluruh layar */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Penting agar kotak tidak membuat scrollbar */
-    z-index: -1; /* Memastikan kotak berada di belakang konten utama */
+    overflow: hidden;
+    z-index: -1; 
 }
 
 /* Styling untuk daftar kotak (UL) */
@@ -47,7 +42,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    list-style: none; /* Hilangkan bullet point standar */
+    list-style: none; 
 }
 
 /* Styling untuk setiap kotak (LI) */
@@ -57,15 +52,11 @@ body {
     list-style: none;
     width: 20px;
     height: 20px;
-    /* Warna kotak mengikuti warna cerah di UI Anda (biru/cyan) */
-    background: rgba(74, 221, 222, 0.2); /* 0.2 adalah transparansi */
-    bottom: -150px; /* Mulai dari bawah layar */
-    
-    /* Menerapkan Animasi: Nama, Durasi, Timing, Iterasi */
+    background: rgba(74, 221, 222, 0.2); 
+    bottom: -150px; 
     animation: animate 25s linear infinite;
 }
 
-/* Mengatur posisi, ukuran, dan delay unik untuk setiap kotak agar gerakan terlihat acak */
 .squares li:nth-child(1) {
     left: 25%;
     width: 80px;
@@ -93,7 +84,7 @@ body {
     width: 60px;
     height: 60px;
     animation-duration: 18s;
-    background: rgba(180, 100, 255, 0.2); /* Warna ungu/magenta sedikit berbeda */
+    background: rgba(180, 100, 255, 0.2); 
 }
 
 .squares li:nth-child(5) {
@@ -140,22 +131,22 @@ body {
     height: 150px;
     animation-delay: 0s;
     animation-duration: 11s;
-    background: rgba(255, 200, 80, 0.2); /* Warna kuning sedikit berbeda */
+    background: rgba(255, 200, 80, 0.2); 
 }
 
 
 /* === Keyframes untuk Gerakan Vertikal dan Opasitas === */
 @keyframes animate {
     0% {
-        transform: translateY(0) rotate(0deg); /* Posisi Awal */
-        opacity: 1; /* Opasitas Penuh */
-        border-radius: 0; /* Bentuk kotak */
+        transform: translateY(0) rotate(0deg); 
+        opacity: 1; 
+        border-radius: 0; 
     }
 
     100% {
-        transform: translateY(-1000px) rotate(720deg); /* Bergerak ke atas 1000px */
-        opacity: 0; /* Menghilang di akhir */
-        border-radius: 50%; /* Berubah menjadi lingkaran di akhir (optional) */
+        transform: translateY(-1000px) rotate(720deg); 
+        opacity: 0; 
+        border-radius: 50%; 
     }
 }
 
@@ -177,36 +168,33 @@ h1 {
 
 .converter-header {
     text-align: center;
-    color: #fff; /* Assuming a dark background as in the image */
+    color: #fff; 
 }
 
 .typing-container {
-    /* Use a monospaced font for the authentic terminal look */
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.2em;
-    white-space: nowrap; /* Prevents text from wrapping */
-    overflow: hidden;    /* Hides text until it is "typed" by the JS */
-    display: inline-block; /* Essential for containing the animation */
+    white-space: nowrap; 
+    overflow: hidden;    
+    display: inline-block; 
 }
 
 /* 1. Cursor Styling */
 .blinking-cursor {
     font-weight: 100;
-    color: #4ADEDE; /* Bright color for visibility */
-    font-size: 1.5em; /* Slightly larger than the text */
+    color: #4ADEDE; 
+    font-size: 1.5em; 
     margin-left: 2px;
-    
-    /* 2. Blinking Animation */
     animation: blink 1s step-end infinite;
 }
 
 /* Keyframes for the cursor blink effect */
 @keyframes blink {
     from, to {
-        opacity: 1; /* Cursor visible */
+        opacity: 1; 
     }
     50% {
-        opacity: 0; /* Cursor invisible */
+        opacity: 0;
     }
 }
 /* CARD DAN TATA LETAK */
@@ -227,7 +215,7 @@ h1 {
 }
 
 .input-card:hover, .output-card:hover {
-    transform: translateY(-5px); /* Efek melayang */
+    transform: translateY(-5px); 
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
 }
 
@@ -407,10 +395,10 @@ textarea:focus {
 .converter-footer {
     text-align: center;
     padding: 30px 0;
-    margin-top: 50px; /* Jarak dari konten atas */
+    margin-top: 50px; 
     width: 100%;
-    color: #A0A0A0; /* Warna teks abu-abu terang */
-    font-family: Arial, sans-serif; /* Font yang lebih mudah dibaca */
+    color: #A0A0A0; 
+    font-family: Arial, sans-serif; 
     font-size: 1em;
 }
 
@@ -423,14 +411,13 @@ textarea:focus {
 }
 
 .maker-text {
-    /* Transisi untuk animasi smooth */
     transition: color 0.3s ease, transform 0.3s ease;
-    cursor: pointer; /* Menunjukkan bahwa teks dapat diklik/interaktif */
-    color: #E0E0E0; /* Warna awal teks */
+    cursor: pointer; 
+    color: #E0E0E0; 
 }
 
 /* Efek saat kursor di atas (hover) */
 .maker-text:hover {
-    color: #4ADEDE; /* Berubah warna menjadi warna terang/cyan */
-    transform: translateY(-2px); /* Teks naik sedikit */
+    color: #4ADEDE; 
+    transform: translateY(-2px); 
 }

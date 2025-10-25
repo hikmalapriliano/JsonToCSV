@@ -16,7 +16,7 @@ const statusMessage = document.getElementById('status-message');
 const textToType = "Transformasikan data JSON Anda menjadi format CSV secara instan.";
     const typingElement = document.getElementById('typed-text');
     let charIndex = 0;
-    const typingSpeed = 70; // Speed in milliseconds (ms)
+    const typingSpeed = 70; 
 
     function typeText() {
         if (charIndex < textToType.length) {
@@ -26,8 +26,7 @@ const textToType = "Transformasikan data JSON Anda menjadi format CSV secara ins
             // Call the function again after a delay
             setTimeout(typeText, typingSpeed);
         } else {
-            // Optional: Start a brief pause or make the text loop/stay
-            // For this example, it will just stop once finished.
+
         }
     }
 
@@ -35,7 +34,7 @@ const textToType = "Transformasikan data JSON Anda menjadi format CSV secara ins
     window.onload = function() {
         typeText();
     };
-    
+
 // Fungsi utama untuk konversi (tetap sama)
 function convertJsonToCsv(jsonArray) {
     if (!Array.isArray(jsonArray) || jsonArray.length === 0) {
@@ -127,10 +126,6 @@ convertBtn.addEventListener('click', () => {
     }
 });
 
-// **********************************************
-// **** BAGIAN INI YANG MENDAPAT PERUBAHAN ****
-// **********************************************
-// Handler untuk tombol Download
 downloadBtn.addEventListener('click', () => {
     const csvData = csvOutput.value;
     if (!csvData) return;
@@ -149,13 +144,9 @@ downloadBtn.addEventListener('click', () => {
     
     showStatus("⬇️ File CSV berhasil didownload!", 'success');
 
-    // 2. KOSONGKAN OUTPUT DAN NONAKTIFKAN TOMBOL
-    csvOutput.value = ''; // Mengosongkan textarea CSV
-    downloadBtn.disabled = true; // Nonaktifkan tombol download lagi
+    csvOutput.value = ''; 
+    downloadBtn.disabled = true; 
 });
-// **********************************************
-// **********************************************
-
 
 // Handler untuk Upload File (tetap sama)
 fileInput.addEventListener('change', (event) => {
