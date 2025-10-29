@@ -12,6 +12,8 @@ const downloadBtn = document.getElementById('download-btn');
 const fileInput = document.getElementById('json-file-input');
 const uploadLabel = document.querySelector('.upload-label');
 const statusMessage = document.getElementById('status-message');
+// --- Data inisial (diasumsikan didefinisikan di HTML atau tempat lain) ---
+// const initialJson = '...'; 
 
 const textToType = "Transformasikan data JSON Anda menjadi format CSV secara instan.";
     const typingElement = document.getElementById('typed-text');
@@ -35,7 +37,54 @@ const textToType = "Transformasikan data JSON Anda menjadi format CSV secara ins
         typeText();
     };
 
-// Fungsi utama untuk konversi (tetap sama)
+// Hapus require('json2csv') karena ini adalah kode front-end
+
+// --- Fungsi untuk Meratakan Objek JSON (TIDAK DIGUNAKAN DALAM LOGIKA CONVERT SAAT INI) ---
+/**
+ * Meratakan objek bersarang menjadi objek datar (flat) 
+ * menggunakan notasi titik (misalnya, 'data.email').
+ * @param {object} obj - Objek bersarang yang akan diratakan.
+ * @param {string} prefix - Prefix (awalan) untuk kunci.
+ * @param {object} res - Objek hasil untuk menyimpan data yang diratakan.
+ */
+const flattenObject = (obj, prefix = '', res = {}) => {
+  for (const key in obj) {
+    if (Object.hasOwnProperty.call(obj, key)) {
+      const newKey = prefix ? prefix + '.' + key : key;
+      const value = obj[key];
+
+      // Jika nilai adalah Objek (dan bukan null atau Array), lakukan rekursif
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        flattenObject(value, newKey, res);
+      } 
+      // Jika nilai adalah Array, konversi menjadi string dengan pemisah (Join)
+      else if (Array.isArray(value)) {
+        // PERINGATAN: Array di dalam array 'items' (misalnya print_metadata.print_waybill_info.items) 
+        // akan dikonversi menjadi string. Jika Array berisi objek, Anda perlu meratakan elemennya lebih lanjut.
+        res[newKey] = value.join('; '); // Menggabungkan elemen array dengan '; '
+      }
+      // Nilai lainnya (string, number, boolean)
+      else {
+        res[newKey] = value;
+      }
+    }
+  }
+  return res;
+};
+
+// --- LOGIKA json2csv DARI FILE ASLI DIHAPUS ---
+// const flatJsonData = nestedJsonData.map(item => flattenObject(item));
+// const fields = Object.keys(flatJsonData[0]);
+// try {
+//   const json2csvParser = new Parser({ fields });
+//   const csv = json2csvParser.parse(flatJsonData);
+//   ...
+// } catch (err) {
+//   ...
+// }
+
+
+// Fungsi utama untuk konversi (TETAP SAMA - Tidak menggunakan flattenObject)
 function convertJsonToCsv(jsonArray) {
     if (!Array.isArray(jsonArray) || jsonArray.length === 0) {
         return "";
@@ -45,7 +94,8 @@ function convertJsonToCsv(jsonArray) {
     jsonArray.forEach(obj => {
         Object.keys(obj).forEach(key => allKeys.add(key));
     });
-    const headers = Array.from(allKeys);
+    // Mengurutkan headers agar urutannya konsisten
+    const headers = Array.from(allKeys).sort();
 
     function escapeCsvValue(value) {
         if (value === null || value === undefined) {
@@ -53,6 +103,11 @@ function convertJsonToCsv(jsonArray) {
         }
 
         let strValue = String(value);
+
+        // Jika value adalah objek/array (seperti print_metadata), konversi ke string JSON
+        if (typeof value === 'object') {
+             strValue = JSON.stringify(value);
+        }
 
         strValue = strValue.replace(/"/g, '""');
 
@@ -87,7 +142,7 @@ function showStatus(message, type) {
     }, 3000); 
 }
 
-// Handler untuk tombol Konversi (tetap sama)
+// Handler untuk tombol Konversi (MODIFIKASI UTAMA DI SINI)
 convertBtn.addEventListener('click', () => {
     let jsonString = jsonInput.value.trim();
     csvOutput.value = '';
@@ -99,20 +154,45 @@ convertBtn.addEventListener('click', () => {
     }
 
     try {
-        let jsonArray;
+        let jsonObject = JSON.parse(jsonString);
+        let dataToConvert = [];
 
-        if (jsonString.startsWith('{') && jsonString.endsWith('}')) {
-             jsonArray = [JSON.parse(jsonString)];
-        } else {
-             jsonArray = JSON.parse(jsonString);
+        // Logika untuk menemukan Array Data:
+        // 1. Cek apakah ini adalah format Array of Objects biasa
+        if (Array.isArray(jsonObject)) {
+            dataToConvert = jsonObject;
+        } 
+        // 2. Cek apakah strukturnya seperti { "code":..., "data": { "result": { "items": [...] } } }
+        else if (jsonObject.data && jsonObject.data.result && Array.isArray(jsonObject.data.result.items)) {
+            // Ambil array yang ada di data.result.items
+            dataToConvert = jsonObject.data.result.items;
+        } 
+        // 3. Cek apakah inputnya adalah Single Object (seperti yang ditangani sebelumnya, tapi objeknya diratakan/dianggap satu baris)
+        else if (typeof jsonObject === 'object' && jsonObject !== null) {
+            // Untuk JSON non-array tunggal (seperti objek request dalam contoh Anda), 
+            // kita akan meratakannya terlebih dahulu agar semua field nested muncul sebagai kolom di CSV.
+            // PENTING: Karena fungsi convertJsonToCsv TIDAK meratakan objek, 
+            // kita harus memastikan data yang dimasukkan ke dalamnya adalah FLAT.
+            // Jika objek input (seperti request) adalah JSON utama (bukan array di dalam field), 
+            // kita asumsikan pengguna ingin meratakan objek utamanya.
+            const flattenedObject = flattenObject(jsonObject);
+            dataToConvert = [flattenedObject];
         }
 
-        if (!Array.isArray(jsonArray)) {
-            showStatus("❌ Gagal: Data JSON harus berupa Array of Objects atau Single Object.", 'error');
+
+        if (dataToConvert.length === 0) {
+            showStatus("❌ Gagal: Tidak ada data Array of Objects yang ditemukan di root, data.result.items, atau objek tunggal yang valid.", 'error');
             return;
         }
 
-        const csvString = convertJsonToCsv(jsonArray);
+        // Karena item di dalam array 'items' memiliki nested object (`print_metadata`),
+        // kita perlu MENGGANTI objek-objek bersarang di dalam dataToConvert dengan versi yang **diratakan (flattened)**
+        // agar kolom-kolomnya terpecah menjadi `print_metadata.delivery_type`, dll.
+        // Jika tidak diratakan, kolom akan menjadi `print_metadata` dan isinya berupa string JSON.
+        const flatDataToConvert = dataToConvert.map(item => flattenObject(item));
+
+
+        const csvString = convertJsonToCsv(flatDataToConvert);
         
         csvOutput.value = csvString;
         downloadBtn.disabled = csvString.length === 0;
@@ -168,6 +248,8 @@ fileInput.addEventListener('change', (event) => {
 
 // Inisialisasi (tetap sama)
 window.addEventListener('load', () => {
-    jsonInput.value = initialJson.trim();
-    convertBtn.click();
+    // Diasumsikan 'initialJson' ada di file HTML/sebelumnya. Jika tidak, baris ini akan error.
+    // Jika tidak ada data awal, hapus dua baris ini.
+    // jsonInput.value = initialJson.trim(); 
+    // convertBtn.click();
 });
