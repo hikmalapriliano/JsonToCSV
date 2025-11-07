@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON to CSV Converter</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> </head>
-<body>
-<div class="background-animation">
-        <ul class="squares">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON To CSV Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/a2d9a62f5a.js" crossorigin="anonymous"></script>
+</head>
+<body data-theme="light">
+  <!-- Tombol Ganti Tema -->
+  <div class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+    <span>Dark</span>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>JSON To CSV Converter</h1>
+    <p>Ubah data JSON menjadi CSV dengan cepat dan Gratis.</p>
+  </header>
+
+  <!-- Kontainer Utama -->
+  <div class="container">
+    <!-- Input JSON -->
+<div class="card">
+  <h3>Input JSON</h3>
+
+  <!-- Tombol Upload JSON File di bawah judul -->
+  <div class="upload-group top">
+    <input type="file" id="jsonFile" accept=".json" hidden />
+    <label for="jsonFile" class="upload-btn full">
+      <i class="fas fa-upload"></i> Upload JSON File
+    </label>
+  </div>
+
+  <p>Klik untuk pilih file JSON atau drag & drop</p>
+
+  <textarea id="jsonInput" placeholder='Tempel JSON di sini.'></textarea>
+
+  <div class="btn-group">
+    <button class="primary" id="convertBtn">Convert → CSV</button>
+    <button class="secondary" id="clearBtn">Clear</button>
+  </div>
+</div>
+
+
+    <!-- Hasil CSV -->
+    <div class="card">
+      <h3>Hasil CSV</h3>
+      <textarea id="csvOutput" placeholder="CSV output akan muncul di sini..." readonly></textarea>
+      <div class="btn-group">
+        <button class="primary" id="downloadBtn">Download CSV</button>
+        <button class="secondary" id="copyBtn">Copy ke Clipboard ✓</button>
+      </div>
     </div>
-    <div class="container">
-        <h1>✨ JSON to CSV Converter ✨</h1>
-       <p class="typing-container">
-            <span id="typed-text"></span>
-            <span class="blinking-cursor">|</span>
-        </p>
+  </div>
 
-        <div class="converter-layout">
-            <div class="input-card">
-                <h2><i class="fas fa-file-code"></i> JSON Input</h2>
-                <div class="upload-area">
-                    <input type="file" id="json-file-input" accept=".json">
-                    <label for="json-file-input" class="upload-label">
-                        <i class="fas fa-upload"></i> Upload File JSON
-                    </label>
-                </div>
-                <textarea id="json-input" placeholder="Paste data JSON di sini..."></textarea>
-            </div>
+  <!-- Footer -->
+  <footer>
+    Made with — <a href="#">Hikmal Apriliano</a>
+  </footer>
 
-            <div class="output-card">
-                <h2><i class="fas fa-file-csv"></i> CSV Output</h2>
-                <button id="download-btn" class="btn" disabled><i class="fas fa-download"></i> Download CSV</button>
-                <textarea id="csv-output" placeholder="Hasil CSV akan muncul di sini..." readonly></textarea>
-            </div>
-        </div>
-
-
-        <button id="convert-btn" class="btn">
-            Convert to CSV →
-        </button>
-<footer class="converter-footer">
-    <p>
-        Made 
-        <span class="maker-text">by Hikmal Apriliano</span>
-    </p>
-</footer>
-        <div id="status-message"></div>
-    </div>
-
-    <script src="script.js"></script> </body>
+  <!-- External JS -->
+  <script src="script.js"></script>
+</body>
 </html>
