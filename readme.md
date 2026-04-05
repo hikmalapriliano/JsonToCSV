@@ -48,4 +48,4 @@ Aplikasi ini menggunakan tema Clean Light Mode dengan dotted background dan kart
 Proyek ini berada di bawah lisensi MIT. Anda bebas menggunakan dan mengembangkannya kembali.
 
 ---
-**Dibuat dengan ❤️ oleh Hikmal Apriliano | © 2025**
+**Dibuat oleh Hikmal Apriliano | © 2025**
